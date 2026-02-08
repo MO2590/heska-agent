@@ -1,0 +1,15 @@
+# Heska Agent Dependencies
+
+# Core
+python-dotenv==1.0.0
+requests==2.31.0
+
+# Telegram Bot
+python-telegram-bot==20.7
+
+# API Clients (you'll need to build these or find libraries)
+# sharpe-api  # Custom wrapper for Sharpe Narratives API
+# lunarcrush  # LunarCrush API client
+
+# Utilities
+python-dateutil==2.8.2
