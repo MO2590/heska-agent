@@ -32,7 +32,15 @@ class HeskaAgent:
         self.xscanr = XScanr()
         self.telegram = TelegramBot(
             self.config.telegram_token,
-            self.config.telegram_chat_id
+            self.config.telegram_chat_i,
+            {
+                'api_key': self.config.x_api_key,
+                'api_secret': self.config.x_api_secret,
+                'access_token': self.config.x_access_token,
+                'access_token_secret': self.config.x_access_token_secret,
+                'bearer_token': self.config.x_bearer_token
+            } if self.config.enable_x_posting else None
+        )
         )
         
         self.last_sector_state = "UNKNOWN"
@@ -63,7 +71,7 @@ class HeskaAgent:
             
             # Alert if state changed
             if state != self.last_sector_state and state in ["HOT", "WARMING"]:
-                self.telegram.send_alert(
+                self.telegram.send_and_post(
                     f"🔥 Heska | MEMECOINS {state}\n"
                     f"Momentum: {momentum:.2f}x | Social volume rising\n"
                     f"Sharpe shows memecoins narrative heating up."
@@ -90,7 +98,7 @@ class HeskaAgent:
                 
                 # If social volume spiked >100% and we haven't alerted yet
                 if social_spike > 100 and ticker not in self.tracked_coins:
-                    self.telegram.send_alert(
+                    self.telegram.send_and_post(
                         f"🆕 Heska | NEW HOT MEME: ${ticker}\n"
                         f"Social volume +{social_spike:.0f}% in 24h\n"
                         f"Contributors surging | Trend: UP\n"
@@ -119,7 +127,7 @@ class HeskaAgent:
                 
                 # Only alert for influencers with 50k+ followers
                 if followers > 50000 and ticker not in self.tracked_coins:
-                    self.telegram.send_alert(
+                    self.telegram.send_and_post(
                         f"⚡ Heska | NEW SOL MEME: ${ticker}\n"
                         f"From @{influencer} ({followers/1000:.0f}k followers)\n"
                         f"MC: ${mc/1000:.0f}k | Liq: ${liq/1000:.0f}k\n"
@@ -136,7 +144,7 @@ class HeskaAgent:
         Main monitoring loop
         """
         logger.info("👁️ Heska is now watching...")
-        self.telegram.send_alert("🚀 Heska Agent started - monitoring meme narratives")
+        self.telegram.send_and_post("🚀 Heska Agent started - monitoring meme narratives")
         
         while True:
             try:
@@ -158,7 +166,7 @@ class HeskaAgent:
                 
             except KeyboardInterrupt:
                 logger.info("🛑 Heska shutting down...")
-                self.telegram.send_alert("🛑 Heska Agent stopped")
+                self.telegram.send_and_post("🛑 Heska Agent stopped")
                 break
             except Exception as e:
                 logger.error(f"Error in main loop: {e}")
