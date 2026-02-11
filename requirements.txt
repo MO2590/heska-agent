@@ -6,6 +6,7 @@ requests==2.31.0
 
 # Telegram Bot
 python-telegram-bot==20.7
+tweepy==4.14.0  # X (Twitter) API
 
 # API Clients (you'll need to build these or find libraries)
 # sharpe-api  # Custom wrapper for Sharpe Narratives API
