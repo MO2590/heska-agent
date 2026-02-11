@@ -21,6 +21,16 @@ class Config:
         # Telegram Settings
         self.telegram_token = os.getenv('TELEGRAM_BOT_TOKEN', '')
         self.telegram_chat_id = os.getenv('TELEGRAM_CHAT_ID', '')
+
+                # X (Twitter) API Settings (optional)
+        self.x_api_key = os.getenv('X_API_KEY', '')
+        self.x_api_secret = os.getenv('X_API_SECRET', '')
+        self.x_access_token = os.getenv('X_ACCESS_TOKEN', '')
+        self.x_access_token_secret = os.getenv('X_ACCESS_TOKEN_SECRET', '')
+        self.x_bearer_token = os.getenv('X_BEARER_TOKEN', '')
+        
+        # X Posting Settings
+        self.enable_x_posting = os.getenv('ENABLE_X_POSTING', 'false').lower() == 'true'
         
         # Agent Behavior
         self.scan_interval_minutes = int(os.getenv('SCAN_INTERVAL_MINUTES', '5'))
